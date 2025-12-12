@@ -12,8 +12,10 @@ export const Login = ({ isPasswordLogin }) => {
 
   return (
     <form
+      action={isPasswordLogin ? "/auth/pw-login" : "/auth/magic-link"}
+      method="POST"
       onSubmit={(event) => {
-        event.preventDefault();
+        isPasswordLogin && event.preventDefault();
         if (isPasswordLogin) {
           // * User wants to login with password
           supabase.auth
@@ -28,8 +30,6 @@ export const Login = ({ isPasswordLogin }) => {
                 alert("Could not sign in");
               }
             });
-        } else {
-          alert("User wants to login with magic link");
         }
       }}
     >
