@@ -1,7 +1,7 @@
 import Link from "next/link";
 export default async function ErrorPage({ searchParams }) {
   const { type } = await searchParams;
-  const knownErrors = ["login-failed","magiclink"];
+  const knownErrors = ["login-failed","magiclink","magiclink-auth"];
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Ooops!</h1>
@@ -11,6 +11,11 @@ export default async function ErrorPage({ searchParams }) {
       {type === "magiclink" && (
         <strong>
           Could not send a magic link. Maybe you had a typo in your E-Mail?
+        </strong>
+      )}
+      {type === "magiclink-auth" && (
+        <strong>
+          There was an error with the code. Try again or contact support.
         </strong>
       )}
       {!knownErrors.includes(type) && (

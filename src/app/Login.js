@@ -4,11 +4,24 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
+import { useEffect } from "react";
+
 export const Login = ({ isPasswordLogin }) => {
   const router = useRouter();
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const supabase = getSupabaseBrowserClient();
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        router.push("/tickets");
+      }
+    });
+    return () => subscription.unsubscribe();
+  });
 
   return (
     <form
