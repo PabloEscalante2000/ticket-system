@@ -9,7 +9,7 @@ export async function POST(request) {
     email,
     options: { 
       shouldCreateUser: false,
-      emailRedirectTo: "http://127.0.0.1:3000/auth/callback"
+      emailRedirectTo: "http://localhost:3000/auth/callback",
     },
   });
   if (error) {

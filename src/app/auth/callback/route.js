@@ -5,16 +5,15 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
+  console.log(code)
+
   if (!code) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   const supabase = await getSupabaseCookiesUtilClient();
 
-  const { error } = await supabase.auth.verifyOtp({
-    token_hash: 'hash',
-    type: 'email',
-  });
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
     console.log(error)

@@ -10,7 +10,7 @@ export const getSupabaseCookiesUtilClient = async () => {
     {
       cookies: {
         getAll() {
-          console.log(cookieStore)
+          //console.log("🍪 COOKIES EN CALLBACK:",cookieStore)
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
