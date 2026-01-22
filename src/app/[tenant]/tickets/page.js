@@ -21,11 +21,15 @@ const dummyTickets = [
   },
 ];
 
-export default function TicketListPage() {
+export default async function TicketListPage({ params }) {
+
+  const {tenant} = await params;
+
+
   return (
     <>
       <h2>Ticket List</h2>
-      <TicketList tickets={dummyTickets} />
+      <TicketList tenant={tenant} tickets={dummyTickets} />
     </>
   );
 }

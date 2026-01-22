@@ -5,8 +5,9 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { useEffect } from "react";
+import { urlPath } from "@/utils/url-helpers";
 
-export const Login = ({ isPasswordLogin }) => {
+export const Login = ({ isPasswordLogin, tenant, tenantName }) => {
   const router = useRouter();
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -17,7 +18,7 @@ export const Login = ({ isPasswordLogin }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        router.push("/tickets");
+        router.push(urlPath("/tickets",tenant));
       }
     });
     return () => subscription.unsubscribe();
@@ -25,7 +26,7 @@ export const Login = ({ isPasswordLogin }) => {
 
   return (
     <form
-      action={isPasswordLogin ? "/auth/pw-login" : "/auth/magic-link"}
+      action={isPasswordLogin ? urlPath("/auth/pw-login",tenant) : urlPath("/auth/magic-link",tenant)}
       method="POST"
       onSubmit={(event) => {
         isPasswordLogin && event.preventDefault();
@@ -38,7 +39,7 @@ export const Login = ({ isPasswordLogin }) => {
             })
             .then((result) => {
               if (result.data?.user) {
-                router.push("/tickets");
+                router.push(urlPath("/tickets",tenant));
               } else {
                 alert("Could not sign in");
               }
@@ -47,7 +48,12 @@ export const Login = ({ isPasswordLogin }) => {
       }}
     >
       <article style={{ maxWidth: "480px", margin: "auto" }}>
-        <header>Login</header>
+        <header>
+          Login
+          <div style={{ display: "block", fontSize: "0.7em" }}>
+            {tenantName}
+          </div>
+        </header>
         <fieldset>
           <label htmlFor="email">
             Email
@@ -75,7 +81,7 @@ export const Login = ({ isPasswordLogin }) => {
           {isPasswordLogin ? (
             <Link
               href={{
-                pathname: "/",
+                pathname: urlPath("/",tenant),
                 query: { magicLink: "yes" },
               }}
             >
@@ -84,7 +90,7 @@ export const Login = ({ isPasswordLogin }) => {
           ) : (
             <Link
               href={{
-                pathname: "/",
+                pathname: urlPath("/",tenant),
                 query: { magicLink: "no" },
               }}
             >
