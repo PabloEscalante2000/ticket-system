@@ -5,6 +5,7 @@ export async function POST(request) {
  const formData = await request.formData();
  const email = formData.get("email");
  const password = formData.get("password");
+ const tenant = formData.get("tenant");
  // Step 2:
  const supabase = await getSupabaseCookiesUtilClient();
  // Step 3:
@@ -14,7 +15,9 @@ export async function POST(request) {
  });
  // Step 4:
  const userData = data?.user;
- if (error || !userData) {
+ if (error || !userData ||
+    !userData.app_metadata?.tenants.includes(tenant)) {
+  await supabase.auth.signOut();
   return NextResponse.redirect(
    new URL("/error?type=login-failed", request.url),
    { status: 302 }

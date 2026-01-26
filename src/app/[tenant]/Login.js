@@ -18,7 +18,12 @@ export const Login = ({ isPasswordLogin, tenant, tenantName }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        router.push(urlPath("/tickets",tenant));
+        if (session.user.app_metadata.tenants?.includes(tenant)) {
+          router.push(`/${tenant}/tickets`);
+        } else {
+          supabase.auth.signOut();
+          alert("Could not sign in, tenant does not match.");
+        }
       }
     });
     return () => subscription.unsubscribe();
@@ -47,6 +52,7 @@ export const Login = ({ isPasswordLogin, tenant, tenantName }) => {
         }
       }}
     >
+      <input type="hidden" name="tenant" value={tenant} />
       <article style={{ maxWidth: "480px", margin: "auto" }}>
         <header>
           Login

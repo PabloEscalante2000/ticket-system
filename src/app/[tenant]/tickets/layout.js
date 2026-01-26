@@ -8,7 +8,7 @@ export default async function TicketsLayout(pageProps) {
   return (
     <>
       <section style={{ borderBottom: "1px solid gray" }}>
-      <TenantName tenantName={tenant} />
+      <TenantName tenant={tenant} />
       <Nav tenant={tenant}/>
       </section>
       <section>{pageProps.children}</section>

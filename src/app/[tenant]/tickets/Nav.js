@@ -31,7 +31,7 @@ export default function Nav({tenant}) {
           <Link
             role="button"
             href={urlPath("/tickets",tenant)}
-            {...(pathname === "/tickets" ? activeProps : inactiveProps)}
+            {...(pathname === urlPath("/tickets",tenant) ? activeProps : inactiveProps)}
           >
             Ticket List
           </Link>
@@ -40,7 +40,7 @@ export default function Nav({tenant}) {
           <Link
             role="button"
             href={urlPath("/tickets/new",tenant)}
-            {...(pathname === "/tickets/new" ? activeProps : inactiveProps)}
+            {...(pathname === urlPath("/tickets/new",tenant) ? activeProps : inactiveProps)}
           >
             Create new Ticket
           </Link>
@@ -49,7 +49,7 @@ export default function Nav({tenant}) {
           <Link
             role="button"
             href={urlPath("/tickets/users",tenant)}
-            {...(pathname === "/tickets/users" ? activeProps : inactiveProps)}
+            {...(pathname === urlPath("/tickets/users",tenant) ? activeProps : inactiveProps)}
           >
             User List
           </Link>
